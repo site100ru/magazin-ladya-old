@@ -33,8 +33,8 @@
 			$name = $_POST['name'];
 			$email = $_POST['email'];
 			$mes = $_POST['mes'];
-            // mail("sidorov-vv3@mail.ru, vasilyev-r@mail.ru", "Сообщение с сайта магазин-ладья.рф", "
-            mail("ladya.kuhni@mail.ru, vasilyev-r@mail.ru", "Сообщение с сайта магазин-ладья.рф", "
+            // mail("ladya.kuhni@mail.ru, vasilyev-r@mail.ru", "Сообщение с сайта магазин-ладья.рф", "
+            mail("sidorov-vv3@mail.ru, vasilyev-r@mail.ru", "Сообщение с сайта магазин-ладья.рф", "
 				Клиент: ".$name."\n
 				Email: ".$email."\n
 				Сообщение: ".$mes."\n
