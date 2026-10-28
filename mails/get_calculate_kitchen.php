@@ -18,7 +18,24 @@
 		$Return = getCaptcha($_POST['g-recaptcha-response']);
 		// Если вероятность робота более 0.5, то считаем отправителя человеком и выполняем отправку почты
 		if( $Return->success == true && $Return->score > 1 ){ */
-			
+
+	// Капча «Пример на сложение» и проверка телефона
+	require_once dirname(__DIR__) . '/captcha/captcha-check.php';
+
+	if ( ! captcha_is_valid( isset( $_POST['captcha'] ) ? $_POST['captcha'] : null ) ) {
+		$_SESSION['win'] = 1;
+		$_SESSION['recaptcha'] = '<p class="text-light"><strong>Извините!</strong><br>Неверный ответ на пример. Пожалуйста повторите попытку!</p>';
+		header("Location: ".$_SERVER['HTTP_REFERER']);
+		exit();
+	}
+
+	if ( ! captcha_phone_is_valid( isset( $_POST['phone'] ) ? $_POST['phone'] : null ) ) {
+		$_SESSION['win'] = 1;
+		$_SESSION['recaptcha'] = '<p class="text-light"><strong>Извините!</strong><br>Введите телефон полностью в формате +7(999)999-99-99. Пожалуйста повторите попытку!</p>';
+		header("Location: ".$_SERVER['HTTP_REFERER']);
+		exit();
+	}
+
 			$answer1 = $_POST['answer1'];
 			$answer2 = $_POST['answer2'];
 			$answer3_1 = $_POST['answer3-1'];

@@ -1,22 +1,35 @@
 <?php
 	session_start();
 	$win = "true";
-	
+
+	// Капча «Пример на сложение»
+	require_once dirname(__DIR__) . '/captcha/captcha-check.php';
+
 
 	// Если существует переменная POST, то
 	if($_POST){
+		/* Старая проверка Google reCaptcha (отключена)
 		// Отправляем данные в Google
 		function getCaptcha($SecretKey){
 			$Response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LdV1IcUAAAAABnQ0mXIp5Yh7tLEcAXzdqG6rx9Y&response={$SecretKey}");
 			$Return = json_decode($Response);
 			return $Return;
 		}
-		
-		/* Принимаем данные обратно */
+
+		// Принимаем данные обратно
 		$Return = getCaptcha($_POST['g-recaptcha-response']);
 		// Если вероятность робота более 0.5, то считаем отправителя человеком и выполняем отправку почты
 		if( $Return->success == true && $Return->score > .125 ) {
-	
+		*/
+
+		// Проверяем ответ на пример (телефона в этой форме нет)
+		if ( ! captcha_is_valid( isset( $_POST['captcha'] ) ? $_POST['captcha'] : null ) ) {
+			$_SESSION['win'] = 1;
+			$_SESSION['recaptcha'] = '<p class="text-light"><strong>Извините!</strong><br>Неверный ответ на пример. Пожалуйста повторите попытку!</p>';
+			header("Location: ".$_SERVER['HTTP_REFERER']);
+			exit();
+		}
+
 			$name = $_POST['name'];
 			$email = $_POST['email'];
 			$mes = $_POST['mes'];
@@ -29,13 +42,13 @@
 			$_SESSION['win'] = 1;
 			$_SESSION['recaptcha'] = '<p class="text-light">Спасибо за обращение в мебельный магазин «Ладья». В&#160;ближайшее время с Вами свяжется наш специалист.</p>';
 			header("Location: ".$_SERVER['HTTP_REFERER']);
-			
-				} else {
+
+				/*} else {
 			// Иначе считаем отправителя роботом и выводим сообщение с просьбой повторить попытку
 			$_SESSION['win'] = 1;
 			$_SESSION['recaptcha'] = '<p class="text-light"><strong>Извините!</strong><br>Ваши действия похожи на робота. Пожалуйста повторите попытку!</p>';
 			header("Location: ".$_SERVER['HTTP_REFERER']);
-		}
+		}*/
 	}
-	
+
 ?>
